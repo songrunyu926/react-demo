@@ -25,7 +25,12 @@ export default class App extends Component {
         age: '18',
         saying: '我喜欢充气娃娃'
       }
-    ]
+    ],
+    AddState: {
+      name: '',
+      age: '',
+      saying: ''
+    }
   }
 
   id = 4
@@ -36,20 +41,82 @@ export default class App extends Component {
     this.setState({
       tips: [...tips, { ...tip, id: this.id++ }]
     })
+
+    //清空
+    this.setState({
+      AddState: {
+        name: '',
+        age: '',
+        saying: ''
+      }
+    })
+
   }
 
   del = index => {
     const { tips } = this.state
-    
+
     this.setState({
-      tips: tips.filter((tip,i) => i !== index)
+      tips: tips.filter((tip, i) => i !== index)
     })
   }
 
-  render() {
+  //获取要修改的数据的id  通过id找到了这个数据
+  update = (updateId) => {
+    this.updateId = updateId
+    //获取这条数据
     const { tips } = this.state
+    const updateTip = tips.filter(tip => tip.id === updateId)[0]
+    const {name,age,saying} = updateTip
+    this.setState({
+      //不允许这样写
+     AddState: {
+       name,
+       age,
+       saying
+     }
+    })
+
+    
+  }
+
+  //修改完成
+  updateComp = () => {
+    const { tips,AddState } = this.state
+    const {name,age,saying} = AddState
+    let updateTip = tips.filter((tip,i) => tip.id === this.updateId)[0]
+    console.log(updateTip)
+    updateTip.name = name
+    updateTip.age = age
+    updateTip.saying = saying
+
+    this.setState({
+      tips: tips
+    })
+    this.setState({
+      AddState: {
+        name: '',
+        age: '',
+        saying: ''
+      }
+    })
+  }
+
+  //绑定数据
+  bindTip = (e,key,AddState) => {
+    AddState[key] = e.target.value.trim()
+    this.setState({
+      //不允许这样写
+     AddState: AddState
+    })
+  }
+
+
+
+  render() {
+    const { tips, AddState } = this.state
     return (
-      <div id="container">
+      <div id="container"  style={{width:1200,margin: "0 auto"}}>
         <header className="header">
           <div
             className="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
@@ -64,10 +131,10 @@ export default class App extends Component {
         </header>
         <div className="row">
           <div className="col-md-8">
-            <List tips={tips} del={this.del}/>
+            <List tips={tips} del={this.del} update={this.update} />
           </div>
           <div className="col-md-4">
-            <Add add={this.add} />
+            <Add add={this.add} AddState={AddState} bindTip={this.bindTip} updateComp={this.updateComp}/>
           </div>
         </div>
       </div>

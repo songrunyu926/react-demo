@@ -6,7 +6,8 @@ import Item from '../Item'
 export default class List extends Component {
   static propTypes = {
     tips: PropTypes.array.isRequired,
-    del: PropTypes.func.isRequired
+    del: PropTypes.func.isRequired,
+    update: PropTypes.func.isRequired
   }
 
 
@@ -26,7 +27,7 @@ export default class List extends Component {
           </tr>
         </thead>
         <tbody>
-          {tips.map((tip,index) => <Item key={tip.id} index={index} tip={tip} del={this.props.del}/>)}         
+          {tips.map((tip,index) => <Item key={tip.id} index={index} tip={tip} del={this.props.del} update={this.props.update}/>)}         
         </tbody>
       </table>
     )

@@ -6,7 +6,8 @@ export default class Item extends Component {
   static propTypes = {
     tip: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
-    del: PropTypes.func.isRequired
+    del: PropTypes.func.isRequired,
+    update: PropTypes.func.isRequired
   }
 
   delTip = () => {
@@ -15,9 +16,10 @@ export default class Item extends Component {
     this.props.del(index)
   }
 
+  //传出一个ID值 
   updateClick = () => {
     const {tip} = this.props
-
+    this.props.update(tip.id)
   }
 
   render() {
